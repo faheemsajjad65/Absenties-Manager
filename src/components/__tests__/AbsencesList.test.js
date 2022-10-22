@@ -61,3 +61,4 @@ test('Should render Absences List component with data', () => {
     expect(absencesListElement).toBeInTheDocument();
     expect(absencesListElement).toHaveTextContent("Member");
 })
+

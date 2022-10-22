@@ -1,5 +1,4 @@
-import absences from '../json_files/absences.json'
-import members from '../json_files/members.json'
+import serviceMgr from '../services/absence.service'
 
 export const getAllAbsences = () => async dispatch => {
     dispatch({
@@ -7,14 +6,18 @@ export const getAllAbsences = () => async dispatch => {
     });
 
     try {
-        absences.payload.map(absItem => {
-            const memberData = members.payload.find(item => item.userId===absItem.userId)
+
+        const absences = await serviceMgr.getAllAbsences().then(response => response.data);
+        const members = await serviceMgr.getAllMembers().then(response => response.data);;
+        
+        absences.map(absItem => {
+            const memberData = members.find(item => item.userId===absItem.userId)
             return absItem.member_data = memberData;
         })
         
         dispatch({
             type: "GET_ABSENCES_SUCCESS",
-            payload: absences.payload,
+            payload: absences,
         });
 
         return Promise.resolve(true)
